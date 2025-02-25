@@ -13,51 +13,8 @@ servers:
 tags:
 - name: Listenverwaltung
 paths:
-  /list/{list_id}:
-    get:
-      tags:
-      - Listenverwaltung
-      summary: Get all items from list
-      operationId: getList
-      parameters:
-      - name: list_id
-        in: path
-        description: list id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: List item returned
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TodoEntry'
-        404:
-          description: Invalid list id
-          content: {}
-    delete:
-      tags:
-      - Listenverwaltung
-      summary: Delete a list
-      operationId: deleteList
-      parameters:
-      - name: list_id
-        in: path
-        description: list id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: List was deleted
-          content: {}
-        404:
-          description: Invalid list id
-          content: {}
-  /list:
+
+  /todo-list:
     post:
       tags:
       - Listenverwaltung
@@ -76,14 +33,238 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TodoList'
+                $ref: '#/components/schemas/AddTodoList'
+        400:
+          description: Incorrect request
+        405:
+          description: Incorrect method used
         500:
-          description: List could not be added
-          content: {}
+          description: Server error
       x-codegen-request-body-name: body
+
+  /todo-list/{list_id}:
+    get:
+      tags:
+      - Listenverwaltung
+      summary: Returns a list
+      operationId: getList
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: List returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTodoList'
+        404:
+          description: Invalid list id
+        405:
+          description: Incorrect method used
+        500:
+          description: Server error
+          
+    delete:
+      tags:
+      - Listenverwaltung
+      summary: Deletes a list
+      operationId: deleteList
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: List was deleted
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/DeleteTodoList'
+        404:
+          description: Invalid list id
+        405:
+          description: Invalid method used
+        500:
+          description: Server error
+                  
+  /todo-lists:
+    get:
+      tags:
+      - Listenverwaltung
+      summary: Returns all lists
+      operationId: getLists
+      responses:
+        200:
+          description: Lists returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllTodoLists'
+        405:
+          description: Incorrect method used
+        500:
+          description: Server error
+          
+  /todo-list/{list_id}/entries:
+    get:
+      tags:
+      - Listenverwaltung
+      summary: Returns all entries from a list
+      operationId: getListEntries
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Listentries returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllListEntries'
+        404:
+          description: Incorrect id
+        405:
+          description: Incorrect method used
+        500:
+          description: Server error
+      
+  /todo-list/{list_id}/entry:
+    post:
+      tags:
+      - Listenverwaltung
+      summary: Add an entry to a list
+      operationId: addEntry
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: entry object
+        content:  
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newEntry'
+      responses:
+        200:
+          description: Entry added
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/addEntry'
+        400:
+          description: Incorrect request
+        404:
+          description: Incorrect id
+        405:
+          description: Incorrect method used
+        500:
+          description: Server error
+          
+  /todo-list/{list_id}/entry/{entry_id}:
+    put:
+      tags:
+      - Listenverwaltung
+      summary: Update an entry at a list
+      operationId: updateEntry
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      - name: entry_id
+        in: path
+        description: entry id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: entry object
+        content:  
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newEntry'
+      responses:
+        200:
+          description: Entry updated
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/addEntry'
+        400:
+          description: Incorrect request
+        404:
+          description: Incorrect id
+        405:
+          description: Incorrect method used
+        500:
+          description: Server error
+          
+    delete:
+      tags:
+      - Listenverwaltung
+      summary: Delete an entry from a list
+      operationId: deleteEntry
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      - name: entry_id
+        in: path
+        description: entry id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Entry updated
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/deleteEntry'
+        404:
+          description: Incorrect id
+        405:
+          description: Incorrect method used
+        500:
+          description: Server error
+
 components:
   schemas:
     TodoList:
+        type: object
+        properties:
+          name:
+            type: string
+    AddTodoList:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uuid
+        name:
+          type: string
+  
+    GetTodoList:
       type: object
       properties:
         id:
@@ -91,19 +272,71 @@ components:
           format: uuid
         name:
           type: string
-    TodoEntry:
+          
+    DeleteTodoList:
       type: object
       properties:
-        id:
+        msg:
           type: string
+          example: success
+    
+    GetAllTodoLists:
+      type: object
+      properties:
+        lists:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: uuid
+              name:
+                type: string
+              
+    GetAllListEntries:
+      type: object
+      properties:
+        list_id:
+          type: integer
           format: uuid
         name:
+          type: string
+        entries:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: uuid
+              name:
+                type: string
+              description:
+                type: string
+            
+    newEntry:
+      type: object
+      properties: 
+        name:   
           type: string
         description:
           type: string
-        user_id:
-          type: string
+    addEntry:
+      type: object
+      properties:
+        id:
+          type: integer
           format: uuid
-        list_id:
+        name:
           type: string
-          format: uuid
+        descritpion:
+          type: string
+    
+    deleteEntry:
+      type: object
+      properties:
+        msg: 
+          type: string
+          example: success
+          
