@@ -259,7 +259,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
           format: uuid
         name:
           type: string
@@ -289,7 +289,7 @@ components:
             type: object
             properties:
               id:
-                type: integer
+                type: string
                 format: uuid
               name:
                 type: string
@@ -298,7 +298,7 @@ components:
       type: object
       properties:
         list_id:
-          type: integer
+          type: string
           format: uuid
         name:
           type: string
@@ -308,7 +308,7 @@ components:
             type: object
             properties:
               id:
-                type: integer
+                type: string
                 format: uuid
               name:
                 type: string
@@ -326,7 +326,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
           format: uuid
         name:
           type: string
