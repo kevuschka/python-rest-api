@@ -297,7 +297,7 @@ components:
     GetAllListEntries:
       type: object
       properties:
-        list_id:
+        id:
           type: string
           format: uuid
         name:
