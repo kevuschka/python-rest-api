@@ -330,7 +330,7 @@ components:
           format: uuid
         name:
           type: string
-        descritpion:
+        description:
           type: string
     
     deleteEntry:
