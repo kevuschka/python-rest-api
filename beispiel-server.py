@@ -58,8 +58,8 @@ def add_new_list():
     return jsonify(new_list), 200
 
 # define endpoint for getting and deleting existing todo lists
-@app.route('/list/<list_id>', methods=['GET', 'DELETE'])
-def handle_list(list_id):
+@app.route('/todo-list/<list_id>', methods=['GET', 'DELETE'])
+def get_list(list_id):
     # find todo list depending on given list id
     list_item = None
     for l in todo_lists:
@@ -87,9 +87,18 @@ def get_all_lists():
 # define endpoint for returning all entries for a list
 @app.route('/todo-list/<list_id>/entries')
 def get_all_entries_from_a_list(list_id):
+    
+    legitListId = (list['id'] == list_id for list in todo_lists)
+    if not legitListId:
+        abort(404)
+        
     entries = []
-    for e in todo_lists[list_id]:
-        entries.append
+    for e in todos:
+        if e['list'] == list_id:
+            entries.append(e)
+
+    return jsonify({entries}), 200
+    
 
 
 
