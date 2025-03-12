@@ -129,7 +129,12 @@ def add_entry(list_id):
     if not list_item:
         abort(404)
 
-    new_entry = request.get_json(force=True)
+    new_entry = {
+        'id': str(uuid.uuid4()),
+        'name': data['name'],
+        'description': data['description'],
+        'list': list_id
+    }
     print('Got new entry to be added: {}'.format(new_entry))
     new_entry['id'] = str(uuid.uuid4())
     new_entry['list'] = list_id
