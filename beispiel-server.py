@@ -112,7 +112,7 @@ def get_all_entries_from_a_list(list_id):
     return jsonify({entries}), 200
     
 # Add an entry to a todo-list
-@app.route('/todo-list/{list_id}/entry', methods=['POST'])
+@app.route('/todo-list/<list_id>/entry', methods=['POST'])
 def add_entry(list_id):
     # check request
     data = request.get_json(force=True)
@@ -132,11 +132,12 @@ def add_entry(list_id):
     new_entry = request.get_json(force=True)
     print('Got new entry to be added: {}'.format(new_entry))
     new_entry['id'] = str(uuid.uuid4())
-    todo_lists.append(new_entry)
+    new_entry['list'] = list_id
+    todos.append(new_entry)
     return jsonify(new_entry), 200
 
 # update an entry at a list
-@app.route('/todo-list/{list_id}/entry/{entry_id}', methods=['PUT', 'DELETE'])
+@app.route('/todo-list/<list_id>/entry/<entry_id>', methods=['PUT', 'DELETE'])
 def updateEntry(list_id, entry_id):
     if request.method == 'PUT':
         # check request
