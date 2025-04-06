@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Todo-Listen-Verwaltung
-  description: ""
+  description: Todo list management rest-api specification followed the OpenApi specification.
   contact:
     email: k.schumilo@gmail.com
   license:
